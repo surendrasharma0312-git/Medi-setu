@@ -21,13 +21,12 @@ export function validateEmail(value: string): FieldError {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim()) ? null : 'error.email';
 }
 
+const INDIAN_PHONE_PREFIX_REGEX = /^(?:\+91|91(?=\d{10}$)|0(?=\d{10}$))/;
+
 /** Removes spaces/dashes and an Indian country or trunk prefix: "+91 98765-43210" -> "9876543210". */
 function toNationalNumber(value: string): string {
   const cleaned = value.replace(/[\s()-]/g, '');
-  if (cleaned.startsWith('+91')) return cleaned.slice(3);
-  if (cleaned.length === 12 && cleaned.startsWith('91')) return cleaned.slice(2);
-  if (cleaned.length === 11 && cleaned.startsWith('0')) return cleaned.slice(1);
-  return cleaned;
+  return cleaned.replace(INDIAN_PHONE_PREFIX_REGEX, '');
 }
 
 /** Indian mobile number: 10 digits starting with 6-9. */
