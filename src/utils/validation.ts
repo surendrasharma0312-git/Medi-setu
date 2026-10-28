@@ -44,7 +44,17 @@ export function validatePhoneOrEmail(value: string): FieldError {
 
 export function validatePassword(value: string): FieldError {
   if (!value) return 'error.required';
-  return value.length >= 8 ? null : 'error.passwordShort';
+  if (value.length < 8) return 'error.passwordShort';
+
+  const hasUpperCase = /[A-Z]/.test(value);
+  const hasLowerCase = /[a-z]/.test(value);
+  const hasNumbers = /\d/.test(value);
+
+  if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
+    return 'error.passwordWeak';
+  }
+
+  return null;
 }
 
 export function validatePasswordMatch(value: string, password: string): FieldError {
