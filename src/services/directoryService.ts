@@ -51,8 +51,29 @@ function toSummary(hospital: Hospital): HospitalSummary {
   return { id: hospital.id, name: hospital.name, city: hospital.city, district: hospital.district };
 }
 
+// Cached map of doctors per hospital to prevent N+1 performance issue during search
+let cachedHospitalDoctorsMap: Map<string, Doctor[]> | null = null;
+
+function getHospitalDoctorsMap(): Map<string, Doctor[]> {
+  if (cachedHospitalDoctorsMap) return cachedHospitalDoctorsMap;
+
+  const map = new Map<string, Doctor[]>();
+  for (const doctor of DEMO_DOCTORS) {
+    for (const hospitalId of doctor.hospitalIds) {
+      let list = map.get(hospitalId);
+      if (!list) {
+        list = [];
+        map.set(hospitalId, list);
+      }
+      list.push(doctor);
+    }
+  }
+  cachedHospitalDoctorsMap = map;
+  return map;
+}
+
 function doctorsOfHospital(hospitalId: string): Doctor[] {
-  return DEMO_DOCTORS.filter((doctor) => doctor.hospitalIds.includes(hospitalId));
+  return getHospitalDoctorsMap().get(hospitalId) || [];
 }
 
 function toDoctorWithHospitals(doctor: Doctor): DoctorWithHospitals {
