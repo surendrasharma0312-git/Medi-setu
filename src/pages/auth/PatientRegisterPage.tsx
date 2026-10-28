@@ -45,10 +45,10 @@ export default function PatientRegisterPage() {
     return key ? t(key) : undefined;
   };
 
-  const onSubmit = handleSubmit(async (v) => {
+  const onSubmit = handleSubmit(async () => {
     setStatus('sending');
     try {
-      await registerPatient({ fullName: v.fullName, contact: v.contact, password: v.password });
+      await registerPatient();
       setValue('password', '');
       setValue('confirmPassword', '');
       setStatus('notConnected');

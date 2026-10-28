@@ -92,23 +92,10 @@ export default function HospitalRegisterPage() {
     setValue('specialtyIds', checked ? [...values.specialtyIds, id] : values.specialtyIds.filter((item) => item !== id));
   };
 
-  const onSubmit = handleSubmit(async (v) => {
+  const onSubmit = handleSubmit(async () => {
     setStatus('sending');
     try {
-      await registerHospital({
-        hospitalName: v.hospitalName,
-        facilityType: v.facilityType,
-        contactPerson: v.contactPerson,
-        phone: v.phone,
-        email: v.email,
-        state: v.state,
-        district: v.district,
-        city: v.city,
-        address: v.address,
-        specialtyIds: v.specialtyIds,
-        registrationNumber: v.registrationNumber,
-        password: v.password,
-      });
+      await registerHospital();
       setValue('password', '');
       setValue('confirmPassword', '');
       setStatus('notConnected');

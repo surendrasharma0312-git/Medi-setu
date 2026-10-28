@@ -34,10 +34,10 @@ export function LoginForm({ role }: { role: 'patient' | 'hospital' }) {
     return key ? t(key) : undefined;
   };
 
-  const onSubmit = handleSubmit(async (v) => {
+  const onSubmit = handleSubmit(async () => {
     setStatus('sending');
     try {
-      await signIn({ role, identifier: v.identifier, password: v.password });
+      await signIn();
       setValue('password', '');
       setStatus('notConnected');
     } catch {

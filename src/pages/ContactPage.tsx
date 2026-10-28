@@ -34,10 +34,10 @@ export default function ContactPage() {
     return key ? t(key) : undefined;
   };
 
-  const onSubmit = handleSubmit(async (v) => {
+  const onSubmit = handleSubmit(async () => {
     setStatus('sending');
     try {
-      await sendContactMessage({ name: v.name, contact: v.contact, message: v.message });
+      await sendContactMessage();
       setStatus('notConnected');
     } catch {
       setStatus('error');

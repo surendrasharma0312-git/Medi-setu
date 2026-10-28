@@ -18,57 +18,20 @@ export interface PrototypeResult {
 
 export type UserRole = 'patient' | 'hospital' | 'admin';
 
-export interface SignInInput {
-  role: UserRole;
-  /** Mobile number or email address */
-  identifier: string;
-  password: string;
-}
-
-export interface PatientRegistrationInput {
-  fullName: string;
-  /** Mobile number or email address */
-  contact: string;
-  password: string;
-}
-
-export interface HospitalRegistrationInput {
-  hospitalName: string;
-  facilityType: string;
-  contactPerson: string;
-  phone: string;
-  email: string;
-  state: string;
-  district: string;
-  city: string;
-  address: string;
-  specialtyIds: string[];
-  registrationNumber: string;
-  password: string;
-}
-
-export interface ContactMessageInput {
-  name: string;
-  contact: string;
-  message: string;
-}
-
 const NOT_CONNECTED: PrototypeResult = { ok: false, reason: 'backend_not_connected' };
 
-// The underscore-prefixed parameters are intentionally unused in the prototype.
-
-export function signIn(_input: SignInInput): Promise<PrototypeResult> {
+export function signIn(): Promise<PrototypeResult> {
   return simulateNetwork(NOT_CONNECTED);
 }
 
-export function registerPatient(_input: PatientRegistrationInput): Promise<PrototypeResult> {
+export function registerPatient(): Promise<PrototypeResult> {
   return simulateNetwork(NOT_CONNECTED);
 }
 
-export function registerHospital(_input: HospitalRegistrationInput): Promise<PrototypeResult> {
+export function registerHospital(): Promise<PrototypeResult> {
   return simulateNetwork(NOT_CONNECTED);
 }
 
-export function sendContactMessage(_input: ContactMessageInput): Promise<PrototypeResult> {
+export function sendContactMessage(): Promise<PrototypeResult> {
   return simulateNetwork(NOT_CONNECTED);
 }
