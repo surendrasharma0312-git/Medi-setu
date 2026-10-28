@@ -20,6 +20,7 @@ export function addDaysISO(days: number): string {
 
 /** "13:30" -> "1:30 PM" */
 export function formatTime(hhmm: string): string {
+  if (!hhmm || !hhmm.includes(':')) return hhmm;
   const [hours, minutes] = hhmm.split(':').map(Number);
   if (Number.isNaN(hours) || Number.isNaN(minutes)) return hhmm;
   const suffix = hours >= 12 ? 'PM' : 'AM';
