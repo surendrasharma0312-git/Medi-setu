@@ -58,17 +58,21 @@ const NOT_CONNECTED: PrototypeResult = { ok: false, reason: 'backend_not_connect
 // The underscore-prefixed parameters are intentionally unused in the prototype.
 
 export function signIn(_input: SignInInput): Promise<PrototypeResult> {
+  void _input;
   return simulateNetwork(NOT_CONNECTED);
 }
 
 export function registerPatient(_input: PatientRegistrationInput): Promise<PrototypeResult> {
+  void _input;
   return simulateNetwork(NOT_CONNECTED);
 }
 
 export function registerHospital(_input: HospitalRegistrationInput): Promise<PrototypeResult> {
+  void _input;
   return simulateNetwork(NOT_CONNECTED);
 }
 
 export function sendContactMessage(_input: ContactMessageInput): Promise<PrototypeResult> {
+  void _input;
   return simulateNetwork(NOT_CONNECTED);
 }
