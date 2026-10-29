@@ -90,17 +90,21 @@ function placeWords(city: string, district: string, locality?: string): Array<st
   return [city, district, locality, PLACE_NAMES_HI[city], PLACE_NAMES_HI[district]];
 }
 
+function getSpecialtyWords(id?: string): string[] {
+  if (!id) return [];
+  const specialty = getSpecialty(id);
+  return specialty ? [specialty.name.en, specialty.name.hi, ...specialty.keywords] : [];
+}
+
+function getServiceWords(id?: string): string[] {
+  if (!id) return [];
+  const service = getService(id);
+  return service ? [service.name.en, service.name.hi] : [];
+}
+
 function hospitalSearchText(hospital: Hospital): string {
   const state = getStateInfo(hospital.state);
   const facility = getFacilityType(hospital.facilityType);
-  const specialtyWords = hospital.specialtyIds.flatMap((id) => {
-    const specialty = getSpecialty(id);
-    return specialty ? [specialty.name.en, specialty.name.hi, ...specialty.keywords] : [];
-  });
-  const serviceWords = hospital.serviceIds.flatMap((id) => {
-    const service = getService(id);
-    return service ? [service.name.en, service.name.hi] : [];
-  });
   const words = compactStrings([
     hospital.name,
     ...placeWords(hospital.city, hospital.district, hospital.locality),
@@ -108,20 +112,17 @@ function hospitalSearchText(hospital: Hospital): string {
     state?.name.hi,
     facility?.name.en,
     facility?.name.hi,
-    ...specialtyWords,
-    ...serviceWords,
+    ...hospital.specialtyIds.flatMap(getSpecialtyWords),
+    ...hospital.serviceIds.flatMap(getServiceWords),
     ...doctorsOfHospital(hospital.id).map((doctor) => doctor.name),
   ]);
   return normalizeText(words.join(' '));
 }
 
 function doctorSearchText(doctor: DoctorWithHospitals): string {
-  const specialty = getSpecialty(doctor.specialtyId);
   const words = compactStrings([
     doctor.name,
-    specialty?.name.en,
-    specialty?.name.hi,
-    ...(specialty ? specialty.keywords : []),
+    ...getSpecialtyWords(doctor.specialtyId),
     ...doctor.hospitals.flatMap((h) => [h.name, ...placeWords(h.city, h.district)]),
   ]);
   return normalizeText(words.join(' '));
