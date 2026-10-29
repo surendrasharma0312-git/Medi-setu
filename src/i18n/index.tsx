@@ -41,7 +41,8 @@ const I18nContext = createContext<I18nValue | null>(null);
 function readStoredLanguage(): Language {
   try {
     return window.localStorage.getItem(STORAGE_KEY) === 'hi' ? 'hi' : 'en';
-  } catch {
+  } catch (error) {
+    console.warn('Failed to read language preference from localStorage:', error);
     return 'en';
   }
 }
@@ -57,8 +58,9 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     setLangState(next);
     try {
       window.localStorage.setItem(STORAGE_KEY, next);
-    } catch {
+    } catch (error) {
       // Storage can be blocked (private mode). The choice then lasts for this visit only.
+      console.warn('Failed to save language preference to localStorage:', error);
     }
   }, []);
 
