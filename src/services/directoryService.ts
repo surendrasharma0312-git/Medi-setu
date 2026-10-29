@@ -76,9 +76,11 @@ function doctorsOfHospital(hospitalId: string): Doctor[] {
   return getHospitalDoctorsMap().get(hospitalId) || [];
 }
 
+const hospitalMap = new Map(DEMO_HOSPITALS.map((h) => [h.id, h]));
+
 function toDoctorWithHospitals(doctor: Doctor): DoctorWithHospitals {
   const hospitals = doctor.hospitalIds.flatMap((id) => {
-    const hospital = DEMO_HOSPITALS.find((h) => h.id === id);
+    const hospital = hospitalMap.get(id);
     return hospital ? [toSummary(hospital)] : [];
   });
   return { ...doctor, hospitals };
